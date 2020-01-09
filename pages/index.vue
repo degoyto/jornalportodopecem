@@ -1,72 +1,120 @@
 <template>
   <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        jornalportodopecem
-      </h1>
-      <h2 class="subtitle">
-        Front-end jornal porto do pecem
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+    <div class= "caixa" v-for="noticia in noticias" :key="noticia.id"  >
+      <div class="img" v-bind:style="{ backgroundImage: 'url(' + noticia.fotoUrl + ')' }"></div>
+      
+      <div class="info">
+        <div class="itens">
+          <h1  >{{noticia.title}}</h1>
+          <div class="tipo">
+            {{noticia.tipo}}
+            
+          </div>
+          
+          <div class="autor"> 
+            Autor: {{noticia.autor}}
+            
+          </div>
+          
+          <div class="conteudo" >
+            
+            <p>{{noticia.conteudo}}</p>
+          </div>
+          <div class="data">
+            {{noticia.createdAt | formatDate}}
+          </div> 
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import axios from 'axios';
+import Logo from '~/components/Logo.vue';
+
 
 export default {
   components: {
-    Logo
+    Logo,
+  },
+  data () {
+    return {
+      noticias:null
+    }
+    
+  },
+  async created() {
+    try {
+      const res = await axios.get(`https://dev-aileron-262703.appspot.com/gnoticias`)
+      this.noticias=res.data;
+      console.log(res.data);
+      
+    }
+    catch (error) {
+      console.log(error)
+    }
   }
 }
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+.caixa{
+    width:80%;
+    margin-top:2%;
+    margin-bottom:2%;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
+    margin-left:5%;
+    height:40vh;
+    min-height:300px;
+  }
+ 
+  .info{
+    width:50%;
+    float:right;
+    padding-left:2%;
+    padding-right: 2%;
+    text-align: left;
+  }
+  .info p{
+    margin-top: 5px;
+    font-size:1vw;
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+  }
+  .info h1{
+    font-size:2.6vw;
+    margin-bottom: -3px;
+    
+  }
+  .tipo, .autor{
+    font-size:0.7vw; 
+  }
+  .botao{
+    margin-top:-25px;
+    background-color:#142248;
+    border: #142248;
+    float:right;
+    font-size:0.8vw; 
+    width:20%;
+  }
+  .data{
+    font-size: 0.8vw;
+    margin-top:20px;
+  }
+  .tipo{
+    width:80px;
+    background-color:#142248;
+    color:white;
+    text-align: center;
+  }
+  .img{
+    width:38vw;
+    height: 40vh;
+    min-height:300px;
+    float:left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    
+  }
 </style>
