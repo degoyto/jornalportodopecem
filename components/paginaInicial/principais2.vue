@@ -61,7 +61,6 @@ export default {
   async mounted (){
     
     this.noticias = (await NoticiaService.principais2(this.exceto)).data
-    console.log(this.noticias)
     this.noticias.splice(0 , 1)
   }
   
